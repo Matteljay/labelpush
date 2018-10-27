@@ -31,8 +31,8 @@ these system packages via apt-get or the Synaptic Package Manager:
 ### Option 1
 
 Now, get a copy of LabelPush. The 'whl' file from the
-[releases-page](releases) is the easiest to work with. It does not
-require extracting, simply run:
+[releases-page](https://github.com/Matteljay/labelpush/releases) is
+the easiest to work with. It does not require extracting, simply run:
 
     sudo pip3 install /path/to/file.whl
 
