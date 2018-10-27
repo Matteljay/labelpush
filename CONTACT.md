@@ -1,7 +1,7 @@
 # LabelPush
 
-: Author: Matteljay
-: E-mail: Matteljay-at-pm-dot-me
+- Author: Matteljay
+- E-mail: Matteljay-at-pm-dot-me
 
 Donate if you find this app useful, educational or you like to motivate more projects like this.
 

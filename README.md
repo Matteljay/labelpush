@@ -1,9 +1,9 @@
 # LabelPush - Lightweight label printing app
 
-: License: MIT License
-: Author: Matteljay
-: Language: Python (>= 3.5)
-: Homepage: https://github.com/Matteljay/labelpush
+- License: MIT License
+- Author: Matteljay
+- Language: Python (>= 3.5)
+- Homepage: https://github.com/Matteljay/labelpush
 
 ## Screenshots
 
