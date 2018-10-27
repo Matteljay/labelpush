@@ -4,7 +4,7 @@ Name=LabelPush
 Comment=Lightweight label printing app
 Exec=labelpush.py
 Terminal=false
-Icon=/usr/share/icons/hicolor/256x256/apps/labelpush.png
+Icon=labelpush
 Categories=Office;
 Encoding=UTF-8
 

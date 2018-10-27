@@ -2,12 +2,12 @@
 # requirements Mint/Ubuntu/Debian: sudo apt-get install python3-pip python3-dev libgl1-mesa-dev xsel
 # to build packages, invoke this script: ./setup.py bdist bdist_wheel
 # to install directly, invoke via pip: sudo pip3 install .
+# to generate a whl file: ./setup.py bdist_wheel
 #
 
 import setuptools
 import re
 import sys
-import os
 mainscript = 'labelpush.py'
 
 with open('requirements.txt') as fh:
@@ -27,8 +27,6 @@ with open(mainscript) as fh:
         print('ERROR: Could not extract version from ' + mainscript, file=sys.stderr)
         sys.exit(1)
 
-os.environ['PYTHONUSERBASE'] = '/usr'
-
 setuptools.setup(
     name = 'labelpush',
     version = extracted_version,
@@ -47,7 +45,7 @@ setuptools.setup(
         'Operating System :: OS Independent',
     ],
     data_files = [
-        ('share/icons/hicolor/256x256/apps', ['data/labelpush.png']),
+        ('share/pixmaps', ['data/labelpush.png']),
         ('share/applications', ['data/labelpush.desktop']),
     ],
 )

@@ -24,7 +24,7 @@
 # CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 #
-# Release version: 2018.10.26
+# Release version: 2018.10.27
 # Donate if you find this app useful, educational or you like to motivate more projects like this.
 #
 # XMR:  4B6YQvbL9jqY3r1cD3ZvrDgGrRpKvifuLVb5cQnYZtapWUNovde7K5rc1LVGw3HhmTiijX21zHKSqjQtwxesBEe6FhufRGS
@@ -70,7 +70,12 @@ import sys
 import shutil
 
 name = 'labelpush'
-def_iconfiles = [ os.path.join(sys.prefix, 'share/icons/hicolor/256x256/apps/labelpush.png'), 'data/labelpush.png', 'labelpush.png' ]
+def_iconfiles = [
+    os.path.join(sys.prefix, 'local/share/pixmaps/labelpush.png'),
+    os.path.join(sys.prefix, 'share/pixmaps/labelpush.png'),
+    'data/labelpush.png',
+    'labelpush.png',
+]
 def_defaultcfg = {
     'lpname': 'default', # printer name
     'labw': 637, # labelwidth
