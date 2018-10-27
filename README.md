@@ -30,8 +30,9 @@ these system packages via apt-get or the Synaptic Package Manager:
 
 ### Option 1
 
-Now, get a copy of LabelPush. The 'whl' file from the releases-page is
-the easiest to work with. It does not require extracting, simply run:
+Now, get a copy of LabelPush. The 'whl' file from the
+[releases-page](releases) is the easiest to work with. It does not
+require extracting, simply run:
 
     sudo pip3 install /path/to/file.whl
 
@@ -94,7 +95,7 @@ FreeBSD (TrueOS) and macOS are Linux based but are also untested.
 
 ### Windows
 
-Altough Python and the required libraries are cross-platform, this
+Although Python and the required libraries are cross-platform, this
 application will not work on Windows due to the big difference in
 printer software (no CUPS). If a strong desire exists, find a way to
 motivate me :-)
