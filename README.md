@@ -26,7 +26,7 @@ However the requirements can be compiled and installed via the Python
 package management system 'pip'. To be able to compile, install at least
 these system packages via apt-get or the Synaptic Package Manager:
 
-    sudo apt-get install python3-pip python3-dev python3-setuptools
+    sudo apt-get install python3-pip python3-dev python3-setuptools \
     libgl1-mesa-dev xclip
 
 ### Option 1
