@@ -24,7 +24,7 @@
 # CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 #
-# Release version: 2018.10.27
+# Release version: 2018.11.17
 # Donate if you find this app useful, educational or you like to motivate more projects like this.
 #
 # XMR:  4B6YQvbL9jqY3r1cD3ZvrDgGrRpKvifuLVb5cQnYZtapWUNovde7K5rc1LVGw3HhmTiijX21zHKSqjQtwxesBEe6FhufRGS
@@ -33,15 +33,8 @@
 # ETH:  0x7C64707BD877f9cFBf0B304baf200cB1BB197354
 # BTC:  14VZcizduTvUTesw4T9yAHZ7GjDDmXZmVs
 #
-# Required installations on Arch Linux:
-#   sudo pacman -S python-kivy python-pillow
-#
-# Required installations on Linux Mint, Ubuntu, Debian:
-#   sudo apt-get install python3-pip python3-dev libgl1-mesa-dev xsel
-#   sudo pip3 install Cython Pygame Kivy Pillow
-#
 
-#
+# IMPORTS
 # Kivy cross platform graphical user interface
 from kivy import __version__ as KIVY_VERSION
 from kivy.app import App
@@ -179,7 +172,7 @@ class ImageButton(ButtonBehavior, Image):
     pass
 
 class RootWidget(BoxLayout):
-    imbytes = BytesIO()
+    imbytes = ''
     def textbox_filter(self, substring, from_undo):
         ret = substring
         if len(substring) == 1: # probably key press or single paste
@@ -195,8 +188,7 @@ class RootWidget(BoxLayout):
             p = Popen(['lp'], stdin=PIPE)
         else:
             p = Popen(['lp', '-d', lpname], stdin=PIPE)
-        self.imbytes.seek(0) # required!
-        p.stdin.write(self.imbytes.read())
+        p.stdin.write(self.imbytes)
         p.stdin.close()
     def btn_IMG(self):
         GLO.immode += 1
@@ -274,10 +266,10 @@ class RootWidget(BoxLayout):
             #canvas_img.save('image_main.png')
             # live memory texture
             data = BytesIO()
-            canvas_img.save(data, format='png')
+            canvas_img.save(data, format='jpeg')
             data.seek(0) # yes, this is also important!
-            self.imbytes = BytesIO(data.read())
-            im = CoreImage(self.imbytes, ext='png')
+            self.imbytes = data.read()
+            im = CoreImage(BytesIO(self.imbytes), ext='jpeg')
             self.update_elements(im) # instead of self.beeld.texture = im.texture, cannot update root widget from thread
             sleep(1)
     #def on_touch_down(self, touch):

@@ -3,7 +3,7 @@
 - License: MIT License
 - Author: Matteljay
 - Language: Python (>= 3.5)
-- Homepage: https://github.com/Matteljay/labelpush
+- Homepage: https://github.com/Matteljay
 
 ## Screenshots
 
@@ -26,7 +26,8 @@ However the requirements can be compiled and installed via the Python
 package management system 'pip'. To be able to compile, install at least
 these system packages via apt-get or the Synaptic Package Manager:
 
-    sudo apt-get install python3-pip python3-dev libgl1-mesa-dev xsel
+    sudo apt-get install python3-pip python3-dev python3-setuptools
+    libgl1-mesa-dev xclip
 
 ### Option 1
 
@@ -44,7 +45,7 @@ If the icon does not show up, you may need to restart your desktop.
 ### Option 2
 
 Alternatively, you can install from tar.gz or the GitHub master tree.
-First, extract the archive. Then run:
+First, extract the archive. Then run from within the extracted folder:
 
     sudo pip3 install .
 

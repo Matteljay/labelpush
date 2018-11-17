@@ -15,6 +15,6 @@ Donate if you find this app useful, educational or you like to motivate more pro
 
 ## Other methods
 
-Please contact me for other channels.
+Please contact me for other payment channels.
 
 
