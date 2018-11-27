@@ -15,6 +15,13 @@
 ## Getting started
 
 LabelPush is a lightweight label printing application written in Python.
+It is built to be fast and simple to use. The CUPS printing system is
+used. So make sure the printer is correctly installed with all default
+settings such as label size. This link should take you to your local
+settings: [CUPS-localhost](http://localhost:631/printers/)
+
+## Installation
+
 Two libraries, the Kivy cross-platform GUI and Pillow imaging library
 are required for LabelPush. Arch Linux (Manjaro) is very up-to-date,
 installation will be very quick. This will be briefly explained below.

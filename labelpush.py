@@ -24,7 +24,6 @@
 # CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 #
-# Release version: 2018.11.17
 # Donate if you find this app useful, educational or you like to motivate more projects like this.
 #
 # XMR:  4B6YQvbL9jqY3r1cD3ZvrDgGrRpKvifuLVb5cQnYZtapWUNovde7K5rc1LVGw3HhmTiijX21zHKSqjQtwxesBEe6FhufRGS
@@ -42,6 +41,7 @@ from kivy.uix.boxlayout import BoxLayout
 from kivy.lang import Builder
 from kivy.config import Config
 from kivy.uix.behaviors import ButtonBehavior
+from kivy.uix.textinput import TextInput
 from kivy.uix.image import Image
 from kivy.properties import ConfigParser
 # Python Imaging Library
@@ -49,7 +49,7 @@ from kivy.core.image import Image as CoreImage
 from PIL import Image as pilImage
 from PIL import ImageDraw, ImageFont, PILLOW_VERSION
 # Threading
-from kivy.clock import mainthread
+from kivy.clock import mainthread, Clock
 from threading import Thread, Event
 from time import sleep
 import datetime
@@ -63,6 +63,7 @@ import sys
 import shutil
 
 name = 'labelpush'
+version = '2018.11.26'
 def_iconfiles = [
     os.path.join(sys.prefix, 'local/share/pixmaps/labelpush.png'),
     os.path.join(sys.prefix, 'share/pixmaps/labelpush.png'),
@@ -98,7 +99,8 @@ def_jsondata = '''[
     { "type": "bool", "title": "More image cycle modi", "desc": "When clicking the image, you get 4 print choices instead of 2",
     "section": "settings", "key": "multimod" },
     { "type": "numeric", "title": "Font height correction", "desc": "For adjusting the vertical offset, use caps when in doubt",
-    "section": "settings", "key": "focorr" }
+    "section": "settings", "key": "focorr" },
+    { "type": "title", "title": "Release version: ''' + version + ''' - Matteljay" }
     ]'''
 Builder.load_string('''
 <RootWidget>:
@@ -115,18 +117,15 @@ Builder.load_string('''
     padding: 30
     spacing: 30
     orientation: 'vertical'
-    TextInput:
+    TextInput_multi_retsel:
         id: id_textbox
         text: ''
-        multiline: True
         font_size: 20
         focus: True
-        unfocus_on_touch: False
-        text_validate_unfocus: False
-        input_filter: root.textbox_filter
+        on_text_validate: root.press_btn_PRINT()
     ImageButton:
         id: id_beeld
-        on_press: root.btn_IMG()
+        on_press: root.btn_IMG(self)
         allow_stretch: True
         keep_ratio: True
         canvas.before:
@@ -150,6 +149,7 @@ Builder.load_string('''
         on_press: root.press_btn_PRINT()
         text: 'PRINT'
         font_size: 20
+        background_down: self.background_normal
 ''')
 
 class GLO(): # global variables: status and config
@@ -160,6 +160,9 @@ class GLO(): # global variables: status and config
     confpath = '' # will hold the system path to the user's config file
     font_pool = {} # used as a dict and will be populated with fontname/fontpath pairs
     immode = 0
+    processed_immode = 0
+    processed_text = ''
+    dispatch_printaction = False
     defaultcfg = def_defaultcfg
     jsondata = def_jsondata
 
@@ -171,26 +174,54 @@ def fatal_lockdown(txt):
 class ImageButton(ButtonBehavior, Image):
     pass
 
-class RootWidget(BoxLayout):
-    imbytes = ''
-    def textbox_filter(self, substring, from_undo):
+class TextInput_multi_retsel(TextInput):
+    multiline = True
+    unfocus_on_touch = False
+    text_validate_unfocus = False
+    def keyboard_on_key_down(self, window, keycode, text, modifiers):
+        if keycode[0] in (9, 10, 11, 12): # hor tab, line feed, vert tab, form feed
+            keycode = (None, None)
+        elif keycode[0] == 13:
+            keycode = (None, None)
+            self.dispatch('on_text_validate')
+        return super(type(self), self).keyboard_on_key_down(window, keycode, text, modifiers)
+    def insert_text(self, substring, from_undo=False):
         ret = substring
         if len(substring) == 1: # probably key press or single paste
-            if substring in '\t\n\r\f\v':
+            if substring in '\t\r\v\f\n':
                 ret = ''
         else: # probably paste from clipboard
-            ret = re.sub(r'[\t\n\r\f\v]', '', substring)
-        return ret
-    def press_btn_PRINT(self):
+            ret = re.sub(r'[\t\r\v\f\n]', '', substring)
+        return super(type(self), self).insert_text(ret, from_undo)
+
+class RootWidget(BoxLayout):
+    imbytes = ''
+    def execute_print(self):
         self.textbox.select_all()
         lpname = ConfigParser.get_configparser('app').get('settings', 'lpname')
-        if not lpname or lpname == 'default': #hasattr(CONF, 'lpname')
+        if not lpname or lpname == 'default':
             p = Popen(['lp'], stdin=PIPE)
         else:
             p = Popen(['lp', '-d', lpname], stdin=PIPE)
         p.stdin.write(self.imbytes)
         p.stdin.close()
-    def btn_IMG(self):
+    def press_btn_PRINT(self):
+        btn = self.btn_PRINT
+        # spam control: alternative to Kivy's min_state_time button
+        if btn.background_color[1] == 2: return
+        btn.background_color[1] = 2
+        def greenback(dt): btn.background_color[1] = 1
+        Clock.schedule_once(greenback, 0.5)
+        # spam control: check if finished drawing
+        if GLO.processed_text != btn.text:
+            GLO.dispatch_printaction = True
+            return
+        self.execute_print()
+    def btn_IMG(self, btn):
+        # spam control: wait for cycle to get drawn
+        if GLO.processed_immode != GLO.immode:
+            return
+        # cycle image
         GLO.immode += 1
         config = ConfigParser.get_configparser('app')
         multimod = int(config.get('settings', 'multimod'))
@@ -216,6 +247,12 @@ class RootWidget(BoxLayout):
                 self.statuslabel.text = 'First time run, welcome! Wrote config {} ---> press F1 to see the settings page'.format(GLO.confpath)
             else:
                 self.statuslabel.text = 'Ready to print, click the image to cycle'
+        # allow button to work instantly
+        GLO.processed_immode = GLO.immode
+        GLO.processed_text = self.textbox.text
+        if GLO.dispatch_printaction:
+            GLO.dispatch_printaction = False
+            self.execute_print()
     def canvas_drawtext(self, canvas_img, maxw, maxh, txt):
         # read config settings
         # alternative: config = App.get_running_app().config
@@ -276,7 +313,7 @@ class RootWidget(BoxLayout):
     #    super(RightClickTextInput,self).on_touch_down(touch)
     #    if touch.button == 'right':
     #def __init__(self, **kwargs):
-    #    super(RootWidget, self).__init__(**kwargs)
+    #    super(type(self), self).__init__(**kwargs)
     #    self.textbox.text = 'example'
     #    self.textbox.select_all()
     #    Thread(target=self.clock_thread).start()
@@ -357,7 +394,7 @@ class LabelPushApp(App):
             self.config.set('settings', 'font', list(GLO.font_pool.keys())[0])
             self.config.write()
     def get_application_config(self):
-        confpath = super(LabelPushApp, self).get_application_config('~/.config/%(appname)s.ini')
+        confpath = super(type(self), self).get_application_config('~/.config/%(appname)s.ini')
         GLO.confpath = confpath
         if os.access(confpath, os.R_OK):
             GLO.firstrun = False
@@ -382,7 +419,7 @@ class LabelPushApp(App):
         #config.setdefaults('settings', {}) # read newly created config into memory
         config.setdefaults('settings', GLO.defaultcfg)
     def close_settings(self, *largs):
-        ret = super(LabelPushApp, self).close_settings(*largs)
+        ret = super(type(self), self).close_settings(*largs)
         GLO.firstrun = False # config window was opened, no more need for this
         self.root.textbox.focus = True
         self.root.textbox.select_all()

@@ -18,7 +18,7 @@ with open('README.md', 'r') as fh:
 
 with open(mainscript) as fh:
     for line in fh:
-        out = re.search(r'Release version: (.+?)$', line)
+        out = re.search(r'version = \u0027(.+?)\u0027$', line)
         if out:
             extracted_version = out.group(1)
             break
