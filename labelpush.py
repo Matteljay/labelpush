@@ -58,18 +58,13 @@ import re
 # System
 from io import BytesIO
 from subprocess import Popen, PIPE
+from pathlib import Path
 import os
 import sys
 import shutil
 
 name = 'labelpush'
-version = '2018.11.26'
-def_iconfiles = [
-    os.path.join(sys.prefix, 'local/share/pixmaps/labelpush.png'),
-    os.path.join(sys.prefix, 'share/pixmaps/labelpush.png'),
-    'data/labelpush.png',
-    'labelpush.png',
-]
+version = '2018.11.27'
 def_defaultcfg = {
     'lpname': 'default', # printer name
     'labw': 637, # labelwidth
@@ -319,6 +314,7 @@ class RootWidget(BoxLayout):
     #    Thread(target=self.clock_thread).start()
 
 class LabelPushApp(App):
+    resource_rootpath = ''
     def populate_printers(self):
         # check if lp/cups is found
         if shutil.which('lp') is None or shutil.which('lpstat') is None:
@@ -439,13 +435,15 @@ class LabelPushApp(App):
     def on_stop(self):
         GLO.stop.set() # stop thread so that the program can exit
     def build(self):
-        for iconfile in def_iconfiles:
-            if os.access(iconfile, os.R_OK):
-                print(':: found app icon ' + iconfile)
-                self.icon = iconfile
+        app_path = Path(__file__).resolve()
+        for tryroot in (str(app_path.parents[1]) + '/share', str(app_path.parents[0]) + '/data'):
+            tryicon = tryroot + '/pixmaps/' + name + '.png'
+            if os.access(tryicon, os.R_OK):
+                self.icon = tryicon
+                self.resource_rootpath = tryroot
                 break
-        if not self.icon:
-            print('WARNING: Could not find application icon', file=sys.stderr)
+        else:
+            print('WARNING: Could not find application resource files', file=sys.stderr)
         return RootWidget()
 
 #

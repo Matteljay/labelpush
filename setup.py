@@ -1,21 +1,19 @@
 #!/usr/bin/env python3
-# requirements Mint/Ubuntu/Debian: sudo apt-get install python3-pip python3-dev libgl1-mesa-dev xsel
-# to build packages, invoke this script: ./setup.py bdist bdist_wheel
 # to install directly, invoke via pip: sudo pip3 install .
 # to generate a whl file: ./setup.py bdist_wheel
-#
 
 import setuptools
-import re
-import sys
+import os, sys, re
+from pathlib import Path
 mainscript = 'labelpush.py'
 
+resources = []
+for fil in (f for f in Path('data').rglob('*') if f.is_file()):
+    resources.append((str('share' / fil.parent.relative_to('data')), [str(fil)]))
 with open('requirements.txt') as fh:
     required = fh.read().strip().splitlines()
-
 with open('README.md', 'r') as fh:
     long_description = fh.read()
-
 with open(mainscript) as fh:
     for line in fh:
         out = re.search(r'version = \u0027(.+?)\u0027$', line)
@@ -44,10 +42,7 @@ setuptools.setup(
         'License :: OSI Approved :: MIT License',
         'Operating System :: OS Independent',
     ],
-    data_files = [
-        ('share/pixmaps', ['data/labelpush.png']),
-        ('share/applications', ['data/labelpush.desktop']),
-    ],
+    data_files = resources,
 )
 
 # End of file
