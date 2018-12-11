@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 # to install directly, invoke via pip: sudo pip3 install .
-# to generate a whl file: ./setup.py bdist_wheel
+# packages for PyPI.org: ./setup.py sdist bdist_wheel && twine upload dist/*
 
 import setuptools
 import os, sys, re
@@ -30,7 +30,7 @@ setuptools.setup(
     version = extracted_version,
     author = 'Matteljay',
     author_email = 'matteljay@pm.me',
-    description = 'Lightweight label printing app',
+    description = 'Simple lightweight label printing app',
     long_description = long_description,
     long_description_content_type = 'text/markdown',
     url = 'https://github.com/Matteljay/labelpush',

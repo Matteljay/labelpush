@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # -*- mode: python -*-
 #
-# LabelPush - lightweight label printing app
+# LabelPush - Simple lightweight label printing app
 # Copyright (C) 2018 Matteljay-at-pm-dot-me
 #
 # Permission is hereby granted, free of charge, to any person
@@ -64,7 +64,7 @@ import sys
 import shutil
 
 name = 'labelpush'
-version = '2018.11.27'
+version = '2018.12.11'
 def_defaultcfg = {
     'lpname': 'default', # printer name
     'labw': 637, # labelwidth
@@ -81,9 +81,9 @@ def_jsondata = '''[
     { "type": "options", "title": "lp printername", "desc": "List of available printers from 'lpstat'",
     "section": "settings", "key": "lpname", "options": ["default"] },
     { "type": "title", "title": "Label size and style" },
-    { "type": "numeric", "title": "Label width", "desc": "300 dpi -> 300 dots per 25.4 mm -> 1 mm = 11.8 dots",
+    { "type": "numeric", "title": "Label width", "desc": "Horizontal resolution, paper size is set via CUPS! http://localhost:631",
     "section": "settings", "key": "labw" },
-    { "type": "numeric", "title": "Label height", "desc": "Example: 2+1/8 x 1 inch or approx 54 x 25 mm",
+    { "type": "numeric", "title": "Label height", "desc": "Vertical resolution, current ratio set for 2+1/8 x 1 inch or 54x25 mm",
     "section": "settings", "key": "labh" },
     { "type": "options", "title": "Font selection", "desc": "Pick a font from 'fc-list :fontformat=TrueType'",
     "section": "settings", "key": "font", "options": ["DejaVuSans"] },
@@ -581,7 +581,7 @@ if __name__ == '__main__':
     pymod_versioncheck('pillow', PILLOW_VERSION, '5.3.0') # DO NOT USE the old python-pil, i tried and it sucks
     # Kivy handles command line arguments :-)
     #from argparse import ArgumentParser
-    #parser = ArgumentParser(description='Lightweight label printing app')
+    #parser = ArgumentParser(description='Simple lightweight label printing app')
     #parser.add_argument('-c', '--config', default=['~/.config/labelpush.ini'], dest='FILE', help='configuration file to use')
     #print(parser.parse_args())
     # GUI settings

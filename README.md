@@ -1,9 +1,11 @@
-# LabelPush - Lightweight label printing app
+# LabelPush
+## Simple lightweight label printing app
 
 - License: MIT License
 - Author: Matteljay
 - Language: Python (>= 3.5)
 - Homepage: https://github.com/Matteljay
+
 
 ## Screenshots
 
@@ -12,51 +14,68 @@
 ![](screenshots/03_hello_double_bold.png)
 ![](screenshots/04_settings.png)
 
-## Getting started
 
-LabelPush is a lightweight label printing application written in Python.
-It is built to be fast and simple to use. The CUPS printing system is
-used. So make sure the printer is correctly installed with all default
-settings such as label size. This link should take you to your local
+## Introduction
+
+LabelPush is a simple lightweight label printing application written in Python.
+It is built to be fast and simple to use. The CUPS printing system is used.
+Please make sure the printer is correctly installed with all correct
+settings such as label/paper size. This link should take you to your local
 settings: [CUPS-localhost](http://localhost:631/printers/)
+
 
 ## Installation
 
-Two libraries, the Kivy cross-platform GUI and Pillow imaging library
-are required for LabelPush. Arch Linux (Manjaro) is very up-to-date,
-installation will be very quick. This will be briefly explained below.
+Package dependencies are kept to a minimum. The proper installation guides
+for your system can be found via these links:
 
-Unfortunately most Debian-based systems like Linux Mint and Ubuntu Linux
-do not have the required up-to-date versions of these libraries.
+- [Kivy](https://kivy.org/doc/stable/installation/installation.html) & [Pillow](https://python-pillow.org/)
+Version 1.10.1 with SDL2 window provider are required! (NOT 1.9 with PyGame).
+An updated Python Imaging Library is always recommended with a graphical Python program. And definitely required for LabelPush.
 
-However the requirements can be compiled and installed via the Python
-package management system 'pip'. To be able to compile, install at least
-these system packages via apt-get or the Synaptic Package Manager:
+- [pip3](https://github.com/pypa/pip) & [setuptools](https://github.com/pypa/setuptools)
+These are Python 3 installation tools. Universally useful!
 
-    sudo apt-get install python3-pip python3-dev python3-setuptools \
-    libgl1-mesa-dev xclip
+- [CUPS](https://www.cups.org/)
+Printer server for macOS and other UNIX-like operating systems.
+
+### Debian Linux
+
+For most up-to-date Debian based systems like Ubuntu Linux and Linux Mint this should work *as root*:
+
+    add-apt-repository ppa:kivy-team/kivy
+    apt-get install python3-kivy python3-pip python3-setuptools
+    pip3 install --upgrade pillow labelpush
+
+### Arch Linux
+
+For the more up-to-date Arch Linux (Manjaro) simply run *as root*:
+
+    pacman -S python-kivy python-pillow python-pip python-setuptools
+    pip3 install labelpush
+
+
+## How to launch
+
+When finished, the shortcut icon can be found from your menu-bar in the **Office** category.
+If the icon does not show up, you may need to restart your desktop.
+Alternatively, open your graphical user terminal and type **labelpush.py**
+
+
+## For developers, hackers and testers
+
+Other ways to install are explained below. The above dependencies are still required!
+Only use the info below if you know what you are doing.
 
 ### Option 1
 
-Now, get a copy of LabelPush. The 'whl' file from the
-[releases-page](https://github.com/Matteljay/labelpush/releases) is
-the easiest to work with. It does not require extracting, simply run:
-
-    sudo pip3 install /path/to/file.whl
-
-All of the requirements should now get downloaded, compiled and
-automatically installed. This can take a while. When finished, the
-shortcut can be found from your menu-bar in the 'Office' category.
-If the icon does not show up, you may need to restart your desktop.
-
-### Option 2
-
-Alternatively, you can install from tar.gz or the GitHub master tree.
-First, extract the archive. Then run from within the extracted folder:
+You can install from tar.gz or the GitHub master tree.
+First, download and extract the archive from the [releases](https://github.com/Matteljay/labelpush/releases) page.
+Then run from within the extracted folder:
 
     sudo pip3 install .
 
-### Option 3
+### Option 2
 
 Alternatively, you can run it without installing to the root
 filesystem. Again, extract the downloaded archive. Then run:
@@ -64,53 +83,23 @@ filesystem. Again, extract the downloaded archive. Then run:
     pip3 install --user -r requirements.txt
     ./labelpush.py
 
-### Arch Linux
 
-Now, let's have a look at Arch Linux. Install these packages:
+## More platforms
 
-    sudo pacman -S python-kivy python-pillow python-setuptools cython
+### Other UNIX
 
-You can now choose from the 3 methods above, they will execute much
-faster as no compilations are required:
+Other flavors of Linux are untested but there is no reason for them
+not to work. Slackware, Gentoo, openSUSE, Fedora, Red Hat, Mandriva, CentOS,...
 
-    sudo pip3 install /path/to/file.whl
-    sudo pip3 install .
-    ./labelpush.py
+### Android, iPhone and Windows
 
-
-## Development version
-
-Optionally, you can use git:
-
-    git clone git://github.com/Matteljay/labelpush.git
-    cd labelpush
-
-This should install dependencies:
-
-    pip3 install --user -r requirements.txt
-
-
-## Other platforms
-
-
-### Linux distributions
-
-This application should work on other up-to-date flavors of Linux like
-Slackware, Gentoo, openSUSE, Fedora, Red Hat, Mandriva, CentOS,...
-
-FreeBSD (TrueOS) and macOS are Linux based but are also untested.
-
-
-### Windows
-
-Although Python and the required libraries are cross-platform, this
-application will not work on Windows due to the big difference in
-printer software (no CUPS). If a strong desire exists, find a way to
+These platforms probably won't work as they feature different printer
+software (no CUPS). If a strong desire exists, find a way to
 motivate me :-)
 
 
-## Contact info & Donations
+## Contact info & donations
 
-See [contact](CONTACT.md) file.
+See the [contact](CONTACT.md) file on GitHub.
 
 
